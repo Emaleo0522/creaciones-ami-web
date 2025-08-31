@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - Creaciones AMI</title>
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Modal (Initially shown) -->
+    <div id="loginModal" class="modal active">
+        <div class="modal-content login-form">
+            <div class="logo-section">
+                <img src="assets/logos/logo-hd.jpg" alt="Creaciones AMI Logo">
+                <h2>Panel Administrativo</h2>
+                <p>Gestiona el contenido de Creaciones AMI</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <select id="userSelect" required>
+                        <option value="">Selecciona tu perfil</option>
+                        <option value="admin">👑 Admin Principal</option>
+                        <option value="creativa">🎨 Creativa</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Contraseña" required>
+                </div>
+                
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Ingresar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (Hidden initially) -->
+    <div id="adminDashboard" class="dashboard">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <img src="assets/logos/logo-hd.jpg" alt="Logo" class="header-logo">
+                <h1>Panel Admin - Creaciones AMI</h1>
+            </div>
+            <div class="header-right">
+                <span id="currentUser" class="user-info"></span>
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Salir
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="admin-nav">
+            <button class="nav-tab active" data-tab="gallery">
+                <i class="fas fa-images"></i>
+                Galería
+            </button>
+            <button class="nav-tab" data-tab="upload">
+                <i class="fas fa-cloud-upload-alt"></i>
+                Subir Contenido
+            </button>
+            <button class="nav-tab" data-tab="manage">
+                <i class="fas fa-cogs"></i>
+                Gestionar
+            </button>
+            <button class="nav-tab" data-tab="stats">
+                <i class="fas fa-chart-bar"></i>
+                Estadísticas
+            </button>
+        </nav>
+
+        <!-- Tab Content -->
+        <main class="admin-content">
+            <!-- Gallery Tab -->
+            <section id="galleryTab" class="tab-content active">
+                <div class="content-header">
+                    <h2>Galería de Contenido</h2>
+                    <div class="filters">
+                        <select id="categoryFilter">
+                            <option value="all">Todas las categorías</option>
+                            <option value="aretes">Aretes</option>
+                            <option value="llaveros">Llaveros</option>
+                            <option value="decoraciones">Decoraciones</option>
+                            <option value="manualidades">Manualidades</option>
+                            <option value="videos">Videos</option>
+                        </select>
+                        <button id="viewToggle" class="btn-secondary">
+                            <i class="fas fa-th"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="galleryGrid" class="gallery-grid">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- Upload Tab -->
+            <section id="uploadTab" class="tab-content">
+                <div class="content-header">
+                    <h2>Subir Nuevo Contenido</h2>
+                </div>
+                
+                <form id="uploadForm" class="upload-form">
+                    <div class="upload-area">
+                        <div id="dropZone" class="drop-zone">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <h3>Arrastra archivos aquí o haz clic para seleccionar</h3>
+                            <p>Soporta: JPG, PNG, MP4, MOV (Máx. 50MB)</p>
+                            <input type="file" id="fileInput" multiple accept="image/*,video/*" hidden>
+                        </div>
+                        
+                        <div id="filePreview" class="file-preview hidden">
+                            <!-- Preview will be shown here -->
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="title">Título *</label>
+                            <input type="text" id="title" required placeholder="Ej: Aretes Corazón Rosa">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="category">Categoría *</label>
+                            <select id="category" required>
+                                <option value="">Seleccionar categoría</option>
+                                <option value="aretes">🎀 Aretes</option>
+                                <option value="llaveros">🔑 Llaveros</option>
+                                <option value="decoraciones">🎄 Decoraciones</option>
+                                <option value="manualidades">🎨 Manualidades</option>
+                                <option value="videos">📹 Videos</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Descripción</label>
+                        <textarea id="description" rows="4" placeholder="Describe los materiales, colores, tamaño, etc."></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="price">Precio (opcional)</label>
+                            <input type="number" id="price" placeholder="0.00" step="0.01">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tags">Etiquetas</label>
+                            <input type="text" id="tags" placeholder="rosa, corazón, fiesta (separadas por comas)">
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-upload"></i>
+                            Subir Contenido
+                        </button>
+                        <button type="button" id="saveDraftBtn" class="btn-secondary">
+                            <i class="fas fa-save"></i>
+                            Guardar Borrador
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Manage Tab -->
+            <section id="manageTab" class="tab-content">
+                <div class="content-header">
+                    <h2>Gestionar Contenido</h2>
+                    <div class="quick-actions">
+                        <button id="bulkEditBtn" class="btn-secondary">
+                            <i class="fas fa-edit"></i>
+                            Edición Masiva
+                        </button>
+                        <button id="exportBtn" class="btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Exportar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="manage-grid">
+                    <div class="stats-card">
+                        <i class="fas fa-images"></i>
+                        <div>
+                            <h3 id="totalImages">0</h3>
+                            <p>Imágenes</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <i class="fas fa-video"></i>
+                        <div>
+                            <h3 id="totalVideos">0</h3>
+                            <p>Videos</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <i class="fas fa-eye"></i>
+                        <div>
+                            <h3 id="totalViews">0</h3>
+                            <p>Visualizaciones</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <i class="fas fa-heart"></i>
+                        <div>
+                            <h3 id="totalLikes">0</h3>
+                            <p>Me Gusta</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recent-activity">
+                    <h3>Actividad Reciente</h3>
+                    <div id="activityList" class="activity-list">
+                        <!-- Recent activities will be loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Tab -->
+            <section id="statsTab" class="tab-content">
+                <div class="content-header">
+                    <h2>Estadísticas y Analytics</h2>
+                    <select id="timePeriod">
+                        <option value="7">Últimos 7 días</option>
+                        <option value="30">Últimos 30 días</option>
+                        <option value="90">Últimos 3 meses</option>
+                    </select>
+                </div>
+                
+                <div class="stats-dashboard">
+                    <div class="chart-container">
+                        <canvas id="viewsChart"></canvas>
+                    </div>
+                    
+                    <div class="category-stats">
+                        <h3>Por Categoría</h3>
+                        <div id="categoryChart" class="category-chart">
+                            <!-- Category breakdown will be shown here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Contenido</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="editForm">
+                <!-- Edit form content -->
+                <div class="form-group">
+                    <label for="editTitle">Título</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editDescription">Descripción</label>
+                    <textarea id="editDescription" rows="4"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Guardar Cambios</button>
+                    <button type="button" class="btn-secondary close-modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <span id="toastMessage"></span>
+            <button id="closeToast">&times;</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/admin-script.js"></script>
+</body>
+</html>
