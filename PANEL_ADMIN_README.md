@@ -1,8 +1,8 @@
-# 👑 Panel Administrativo - Creaciones AMI
+# 👑 Panel Administrativo - Creaciones AMIS
 
 ## 🎯 **¿Qué es?**
 
-Un **panel de administración completo** integrado en tu web de Creaciones AMI que permite a las dos administradoras gestionar todo el contenido de manera profesional desde cualquier dispositivo.
+Un **panel de administración completo** integrado en tu web de Creaciones AMIS que permite a las dos administradoras gestionar todo el contenido de manera profesional desde cualquier dispositivo.
 
 ---
 
@@ -67,7 +67,7 @@ Password: ami2024 / creaciones / admin
 ## 🎨 **Diseño y UX**
 
 ### **🌈 Branding Consistente**
-- **Colores exactos** de Creaciones AMI
+- **Colores exactos** de Creaciones AMIS
 - **Animaciones suaves** y profesionales
 - **Iconos intuitivos** para cada acción
 - **Responsive 100%** - Se ve perfecto en cualquier dispositivo
@@ -184,7 +184,7 @@ El panel está **100% funcional** y listo para usarse en producción. Solo neces
 
 ## 🚀 **¡Listo para Producción!**
 
-El panel admin está **completamente terminado** y optimizado. Las dos administradoras de Creaciones AMI ya pueden:
+El panel admin está **completamente terminado** y optimizado. Las dos administradoras de Creaciones AMIS ya pueden:
 
 ✨ **Gestionar contenido profesionalmente**  
 📱 **Desde cualquier dispositivo**  
