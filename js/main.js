@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     initContactForm();
     loadGalleryItems();
+    updateWhatsAppLinks();
+    updateAboutStats();
 });
 
 // GSAP Animations
@@ -387,8 +389,12 @@ function initContactForm() {
         // Create structured WhatsApp message
         const mensaje = createWhatsAppMessage(data);
         
+        // Get WhatsApp number from admin settings or use default
+        const whatsappSettings = JSON.parse(localStorage.getItem('whatsappSettings') || '{"number": "5492604201185"}');
+        const whatsappNumber = whatsappSettings.number || '5492604201185';
+        
         // Open WhatsApp with the message
-        const whatsappURL = `https://wa.me/5492604201185?text=${encodeURIComponent(mensaje)}`;
+        const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensaje)}`;
         window.open(whatsappURL, '_blank');
         
         // Reset form
@@ -461,15 +467,29 @@ function loadImageGallery() {
     const imageGallery = document.getElementById('image-gallery');
     if (!imageGallery) return;
 
-    images.forEach((src, index) => {
+    // Load from admin panel (localStorage) first, then static images
+    const adminGalleryItems = JSON.parse(localStorage.getItem('amiGalleryItems') || '[]');
+    const adminImages = adminGalleryItems.filter(item => 
+        item.category === 'imagenes' && item.published !== false
+    );
+    
+    // Combine admin images with static images
+    const allImages = [...adminImages.map(item => ({...item, source: 'admin'})), 
+                      ...images.map(src => ({ url: src, title: 'Creación', source: 'static' }))];
+    
+    allImages.forEach((item, index) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
+        
+        const imgSrc = item.url || item.file || item;
+        const imgTitle = item.title || `Creación AMIS ${index + 1}`;
+        
         galleryItem.innerHTML = `
-            <img src="${src}" alt="Creación AMI ${index + 1}" loading="lazy">
+            <img src="${imgSrc}" alt="${imgTitle}" loading="lazy">
         `;
         
         // Add click event for lightbox
-        galleryItem.addEventListener('click', () => openLightbox(index));
+        galleryItem.addEventListener('click', () => openLightbox(index, allImages));
         
         imageGallery.appendChild(galleryItem);
     });
@@ -497,22 +517,36 @@ function loadVideoGallery() {
     const thumbnailContainer = document.getElementById('videoThumbnails');
     if (!mainVideo || !thumbnailContainer) return;
 
-    // Set first video as main
-    mainVideo.src = videos[0];
+    // Load from admin panel (localStorage) first, then static videos  
+    const adminGalleryItems = JSON.parse(localStorage.getItem('amiGalleryItems') || '[]');
+    const adminVideos = adminGalleryItems.filter(item => 
+        item.category === 'videos' && item.published !== false
+    );
     
-    videos.forEach((src, index) => {
+    // Combine admin videos with static videos
+    const allVideos = [...adminVideos.map(item => ({...item, source: 'admin'})), 
+                      ...videos.map(src => ({ url: src, title: 'Video', source: 'static' }))];
+    
+    // Set first video as main (if any videos exist)
+    if (allVideos.length > 0) {
+        const firstVideo = allVideos[0];
+        mainVideo.src = firstVideo.url || firstVideo.file || firstVideo;
+    }
+    
+    allVideos.forEach((item, index) => {
         const thumbContainer = document.createElement('div');
         thumbContainer.className = `video-thumb ${index === 0 ? 'active' : ''}`;
         
         const thumb = document.createElement('video');
-        thumb.src = src;
+        const videoSrc = item.url || item.file || item;
+        thumb.src = videoSrc;
         thumb.muted = true;
         thumb.preload = 'metadata';
         
         thumbContainer.appendChild(thumb);
         
         thumbContainer.addEventListener('click', () => {
-            mainVideo.src = src;
+            mainVideo.src = videoSrc;
             
             // Update active thumbnail
             document.querySelectorAll('.video-thumb').forEach(t => t.classList.remove('active'));
@@ -561,16 +595,25 @@ function loadVideoGallery() {
 }
 
 // Lightbox functionality
-function openLightbox(index) {
+let currentImageList = []; // Store current image list for navigation
+
+function openLightbox(index, imagesList = null) {
     const lightbox = document.getElementById('lightbox');
     const lightboxImage = document.getElementById('lightbox-image');
     const currentImageSpan = document.getElementById('current-image');
     const totalImagesSpan = document.getElementById('total-images');
     
+    // Use provided image list or fallback to static images
+    currentImageList = imagesList || images.map(src => ({ url: src, title: 'Creación', source: 'static' }));
+    
     currentImageIndex = index;
-    lightboxImage.src = images[currentImageIndex];
+    const currentImage = currentImageList[currentImageIndex];
+    const imageSrc = currentImage.url || currentImage.file || currentImage;
+    
+    lightboxImage.src = imageSrc;
+    lightboxImage.alt = currentImage.title || `Creación AMIS ${currentImageIndex + 1}`;
     currentImageSpan.textContent = currentImageIndex + 1;
-    totalImagesSpan.textContent = images.length;
+    totalImagesSpan.textContent = currentImageList.length;
     
     lightbox.style.display = 'block';
     
@@ -603,9 +646,9 @@ function changeImage(direction) {
     const currentImageSpan = document.getElementById('current-image');
     
     if (direction === 'next') {
-        currentImageIndex = (currentImageIndex + 1) % images.length;
+        currentImageIndex = (currentImageIndex + 1) % currentImageList.length;
     } else {
-        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        currentImageIndex = (currentImageIndex - 1 + currentImageList.length) % currentImageList.length;
     }
     
     // Animation for image change
@@ -614,7 +657,11 @@ function changeImage(direction) {
         scale: 0.8,
         duration: 0.2,
         onComplete: () => {
-            lightboxImage.src = images[currentImageIndex];
+            const currentImage = currentImageList[currentImageIndex];
+            const imageSrc = currentImage.url || currentImage.file || currentImage;
+            
+            lightboxImage.src = imageSrc;
+            lightboxImage.alt = currentImage.title || `Creación AMIS ${currentImageIndex + 1}`;
             currentImageSpan.textContent = currentImageIndex + 1;
             
             gsap.to(lightboxImage, {
@@ -736,3 +783,31 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Update WhatsApp links with admin panel settings
+function updateWhatsAppLinks() {
+    const whatsappSettings = JSON.parse(localStorage.getItem('whatsappSettings') || '{"number": "5492604201185", "message": "¡Hola! Me interesa hacer un pedido de goma eva 💕"}');
+    const whatsappNumber = whatsappSettings.number || '5492604201185';
+    const whatsappMessage = whatsappSettings.message || '¡Hola! Me interesa hacer un pedido de goma eva 💕';
+    
+    // Update all WhatsApp links
+    document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
+        link.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+    });
+}
+
+// Update About Us statistics with admin panel settings
+function updateAboutStats() {
+    const statsData = JSON.parse(localStorage.getItem('aboutStats') || '{"creaciones": 1000, "clientes": 277}');
+    
+    // Update the statistics numbers in the DOM
+    const creacionesElement = document.querySelector('.stat:nth-child(1) .stat-number');
+    const clientesElement = document.querySelector('.stat:nth-child(2) .stat-number');
+    
+    if (creacionesElement) {
+        creacionesElement.textContent = statsData.creaciones + '+';
+    }
+    if (clientesElement) {
+        clientesElement.textContent = statsData.clientes;
+    }
+}
