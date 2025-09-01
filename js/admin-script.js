@@ -73,6 +73,15 @@ class AdminPanel {
         document.getElementById('closeToast').addEventListener('click', () => {
             this.hideToast();
         });
+        
+        // Settings buttons
+        document.getElementById('saveWhatsappBtn').addEventListener('click', () => {
+            this.saveWhatsappSettings();
+        });
+        
+        document.getElementById('saveStatsBtn').addEventListener('click', () => {
+            this.saveAboutStats();
+        });
     }
     
     // ===== AUTHENTICATION =====
@@ -88,33 +97,25 @@ class AdminPanel {
     }
     
     handleLogin() {
-        const userSelect = document.getElementById('userSelect').value;
         const password = document.getElementById('password').value;
-        
-        if (!userSelect) {
-            this.showToast('Por favor selecciona tu perfil', 'error');
-            return;
-        }
         
         if (!password) {
             this.showToast('Por favor ingresa tu contraseña', 'error');
             return;
         }
         
-        // Simular autenticación (aquí iría la lógica real con Supabase)
-        const validPasswords = ['ami2024', 'creaciones', 'admin'];
-        
-        if (validPasswords.includes(password.toLowerCase())) {
+        // Verificar contraseña específica
+        if (password === 'PameJose2025') {
             this.currentUser = {
-                type: userSelect,
-                name: userSelect === 'admin' ? 'Admin Principal' : 'Creativa',
+                type: 'admin',
+                name: 'Administrador',
                 loginTime: new Date().toISOString()
             };
             
             // Guardar sesión
             localStorage.setItem('amiAdminUser', JSON.stringify(this.currentUser));
             
-            this.showToast(`¡Bienvenida ${this.currentUser.name}! 👋`, 'success');
+            this.showToast(`¡Bienvenida! 👋`, 'success');
             this.showDashboard();
         } else {
             this.showToast('Contraseña incorrecta', 'error');
@@ -142,7 +143,7 @@ class AdminPanel {
         
         // Update user info
         document.getElementById('currentUser').textContent = 
-            `${this.currentUser.name} ${this.currentUser.type === 'admin' ? '👑' : '🎨'}`;
+            `${this.currentUser.name} 👑`;
         
         // Load initial data
         this.loadGalleryContent();
@@ -170,6 +171,8 @@ class AdminPanel {
         // Load specific content if needed
         if (tabName === 'stats') {
             this.loadAnalytics();
+        } else if (tabName === 'settings') {
+            this.loadSettings();
         }
     }
     
@@ -686,6 +689,74 @@ class AdminPanel {
     
     hideToast() {
         document.getElementById('toast').classList.remove('show');
+    }
+    
+    // ===== SETTINGS FUNCTIONS =====
+    
+    loadSettings() {
+        // Load WhatsApp settings
+        const whatsappData = JSON.parse(localStorage.getItem('whatsappSettings') || '{"number": "5492604201185", "message": "¡Hola! Me interesa hacer un pedido de goma eva 💕"}');
+        document.getElementById('whatsappNumber').value = whatsappData.number;
+        document.getElementById('whatsappMessage').value = whatsappData.message;
+        
+        // Load about stats
+        const statsData = JSON.parse(localStorage.getItem('aboutStats') || '{"creaciones": 1000, "clientes": 277}');
+        document.getElementById('totalCreaciones').value = statsData.creaciones;
+        document.getElementById('clientesFelices').value = statsData.clientes;
+        
+        // Update current content stats
+        this.updateCurrentStats();
+    }
+    
+    saveWhatsappSettings() {
+        const number = document.getElementById('whatsappNumber').value.trim();
+        const message = document.getElementById('whatsappMessage').value.trim();
+        
+        if (!number) {
+            this.showToast('El número de WhatsApp es requerido', 'error');
+            return;
+        }
+        
+        const whatsappData = { number, message };
+        localStorage.setItem('whatsappSettings', JSON.stringify(whatsappData));
+        
+        // Update the website's WhatsApp links
+        this.updateWhatsappLinks(number, message);
+        
+        this.showToast('Configuración de WhatsApp guardada exitosamente! 🎉', 'success');
+    }
+    
+    saveAboutStats() {
+        const creaciones = parseInt(document.getElementById('totalCreaciones').value) || 1000;
+        const clientes = parseInt(document.getElementById('clientesFelices').value) || 277;
+        
+        const statsData = { creaciones, clientes };
+        localStorage.setItem('aboutStats', JSON.stringify(statsData));
+        
+        // Update the website's stats
+        this.updateWebsiteStats(creaciones, clientes);
+        
+        this.showToast('Estadísticas actualizadas exitosamente! 📊', 'success');
+    }
+    
+    updateWhatsappLinks(number, message) {
+        // This would update the main website's WhatsApp links
+        // For now, we'll just store it for future use
+        console.log('WhatsApp updated:', number, message);
+    }
+    
+    updateWebsiteStats(creaciones, clientes) {
+        // This would update the main website's stats
+        // For now, we'll just store it for future use  
+        console.log('Stats updated:', creaciones, clientes);
+    }
+    
+    updateCurrentStats() {
+        const imageCount = this.galleryItems.filter(item => item.type === 'image' || item.category === 'imagenes').length;
+        const videoCount = this.galleryItems.filter(item => item.type === 'video' || item.category === 'videos').length;
+        
+        document.getElementById('currentImages').textContent = imageCount;
+        document.getElementById('currentVideos').textContent = videoCount;
     }
 }
 

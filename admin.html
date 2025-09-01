@@ -20,15 +20,6 @@
             
             <form id="loginForm">
                 <div class="input-group">
-                    <i class="fas fa-user"></i>
-                    <select id="userSelect" required>
-                        <option value="">Selecciona tu perfil</option>
-                        <option value="admin">👑 Admin Principal</option>
-                        <option value="creativa">🎨 Creativa</option>
-                    </select>
-                </div>
-                
-                <div class="input-group">
                     <i class="fas fa-lock"></i>
                     <input type="password" id="password" placeholder="Contraseña" required>
                 </div>
@@ -68,9 +59,9 @@
                 <i class="fas fa-cloud-upload-alt"></i>
                 Subir Contenido
             </button>
-            <button class="nav-tab" data-tab="manage">
+            <button class="nav-tab" data-tab="settings">
                 <i class="fas fa-cogs"></i>
-                Gestionar
+                Configuración
             </button>
             <button class="nav-tab" data-tab="stats">
                 <i class="fas fa-chart-bar"></i>
@@ -87,10 +78,7 @@
                     <div class="filters">
                         <select id="categoryFilter">
                             <option value="all">Todas las categorías</option>
-                            <option value="aretes">Aretes</option>
-                            <option value="llaveros">Llaveros</option>
-                            <option value="decoraciones">Decoraciones</option>
-                            <option value="manualidades">Manualidades</option>
+                            <option value="imagenes">Imágenes</option>
                             <option value="videos">Videos</option>
                         </select>
                         <button id="viewToggle" class="btn-secondary">
@@ -134,10 +122,7 @@
                             <label for="category">Categoría *</label>
                             <select id="category" required>
                                 <option value="">Seleccionar categoría</option>
-                                <option value="aretes">🎀 Aretes</option>
-                                <option value="llaveros">🔑 Llaveros</option>
-                                <option value="decoraciones">🎄 Decoraciones</option>
-                                <option value="manualidades">🎨 Manualidades</option>
+                                <option value="imagenes">📸 Imágenes</option>
                                 <option value="videos">📹 Videos</option>
                             </select>
                         </div>
@@ -173,60 +158,84 @@
                 </form>
             </section>
 
-            <!-- Manage Tab -->
-            <section id="manageTab" class="tab-content">
+            <!-- Settings Tab -->
+            <section id="settingsTab" class="tab-content">
                 <div class="content-header">
-                    <h2>Gestionar Contenido</h2>
-                    <div class="quick-actions">
-                        <button id="bulkEditBtn" class="btn-secondary">
-                            <i class="fas fa-edit"></i>
-                            Edición Masiva
-                        </button>
-                        <button id="exportBtn" class="btn-secondary">
-                            <i class="fas fa-download"></i>
-                            Exportar
-                        </button>
-                    </div>
+                    <h2>Configuración del Sitio</h2>
                 </div>
                 
-                <div class="manage-grid">
-                    <div class="stats-card">
-                        <i class="fas fa-images"></i>
-                        <div>
-                            <h3 id="totalImages">0</h3>
-                            <p>Imágenes</p>
+                <div class="settings-grid">
+                    <!-- WhatsApp Settings -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <i class="fab fa-whatsapp"></i>
+                            <h3>Configuración WhatsApp</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-group">
+                                <label for="whatsappNumber">Número de WhatsApp</label>
+                                <input type="tel" id="whatsappNumber" placeholder="5492604201185" value="5492604201185">
+                                <small>Formato: código país + área + número (sin espacios ni símbolos)</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="whatsappMessage">Mensaje predeterminado</label>
+                                <textarea id="whatsappMessage" rows="3">¡Hola! Me interesa hacer un pedido de goma eva 💕</textarea>
+                            </div>
+                            <button id="saveWhatsappBtn" class="btn-primary">
+                                <i class="fas fa-save"></i>
+                                Guardar WhatsApp
+                            </button>
                         </div>
                     </div>
-                    
-                    <div class="stats-card">
-                        <i class="fas fa-video"></i>
-                        <div>
-                            <h3 id="totalVideos">0</h3>
-                            <p>Videos</p>
+
+                    <!-- About Us Stats -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <h3>Estadísticas "Sobre Nosotros"</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="stats-row">
+                                <div class="form-group">
+                                    <label for="totalCreaciones">Total Creaciones</label>
+                                    <input type="number" id="totalCreaciones" value="1000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="clientesFelices">Clientes Felices</label>
+                                    <input type="number" id="clientesFelices" value="277">
+                                </div>
+                            </div>
+                            <button id="saveStatsBtn" class="btn-primary">
+                                <i class="fas fa-save"></i>
+                                Actualizar Estadísticas
+                            </button>
                         </div>
                     </div>
-                    
-                    <div class="stats-card">
-                        <i class="fas fa-eye"></i>
-                        <div>
-                            <h3 id="totalViews">0</h3>
-                            <p>Visualizaciones</p>
+
+                    <!-- Current Stats Display -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <i class="fas fa-info-circle"></i>
+                            <h3>Estado Actual</h3>
                         </div>
-                    </div>
-                    
-                    <div class="stats-card">
-                        <i class="fas fa-heart"></i>
-                        <div>
-                            <h3 id="totalLikes">0</h3>
-                            <p>Me Gusta</p>
+                        <div class="card-content">
+                            <div class="current-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-images"></i>
+                                    <div>
+                                        <span class="stat-number" id="currentImages">0</span>
+                                        <span class="stat-label">Imágenes</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-video"></i>
+                                    <div>
+                                        <span class="stat-number" id="currentVideos">0</span>
+                                        <span class="stat-label">Videos</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="recent-activity">
-                    <h3>Actividad Reciente</h3>
-                    <div id="activityList" class="activity-list">
-                        <!-- Recent activities will be loaded here -->
                     </div>
                 </div>
             </section>
