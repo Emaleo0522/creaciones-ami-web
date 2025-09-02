@@ -701,8 +701,8 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe gallery items, section titles, and product cards
-document.querySelectorAll('.gallery-item, .section-title, .producto-card').forEach(el => {
+// Observe gallery items and section titles only (products are always visible now)
+document.querySelectorAll('.gallery-item, .section-title').forEach(el => {
     observer.observe(el);
 });
 

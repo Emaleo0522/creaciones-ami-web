@@ -504,22 +504,11 @@ section {
   transition: all 0.3s ease;
 }
 
-/* Scroll-triggered animation for product cards */
+/* Product cards always visible */
 .producto-card {
   opacity: 1;
   transform: translateY(0) scale(1);
-  transition: all 0.6s ease;
-}
-
-/* Initial state for animation */
-.producto-card:not(.in-view) {
-  opacity: 0;
-  transform: translateY(50px) scale(0.8);
-}
-
-.producto-card.in-view {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+  transition: all 0.3s ease;
 }
 
 @keyframes fadeInUp {
@@ -1182,16 +1171,16 @@ section {
     top: 70px;
     left: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(10px);
+    background: var(--white);
+    border: 2px solid var(--primary-pink);
     flex-direction: column;
     text-align: center;
     padding: 2rem 0;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 30px rgba(233, 30, 99, 0.3);
     transform: translateY(-100%);
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
     z-index: 1001;
   }
   
