@@ -687,13 +687,22 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('in-view');
+            // Add staggered animation for product cards
+            if (entry.target.classList.contains('producto-card')) {
+                const cards = Array.from(document.querySelectorAll('.producto-card'));
+                const cardIndex = cards.indexOf(entry.target);
+                setTimeout(() => {
+                    entry.target.classList.add('in-view');
+                }, cardIndex * 150); // 150ms delay between each card
+            } else {
+                entry.target.classList.add('in-view');
+            }
         }
     });
 }, observerOptions);
 
-// Observe gallery items and section titles only
-document.querySelectorAll('.gallery-item, .section-title').forEach(el => {
+// Observe gallery items, section titles, and product cards
+document.querySelectorAll('.gallery-item, .section-title, .producto-card').forEach(el => {
     observer.observe(el);
 });
 
