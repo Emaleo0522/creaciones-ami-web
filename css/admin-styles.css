@@ -874,3 +874,86 @@ body {
         overflow-y: auto;
     }
 }
+
+/* ===== BACK TO WEBSITE BUTTONS ===== */
+.back-to-website {
+    margin-top: 2rem;
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(139, 139, 139, 0.2);
+}
+
+.btn-back-to-web {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(135deg, var(--text-light), var(--text-dark));
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.btn-back-to-web:hover {
+    background: linear-gradient(135deg, var(--text-dark), var(--text-light));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    color: var(--white);
+}
+
+.btn-back-to-web-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: linear-gradient(135deg, var(--complementary-green), var(--primary-blue));
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    margin-right: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.btn-back-to-web-header:hover {
+    background: linear-gradient(135deg, var(--primary-blue), var(--complementary-green));
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    color: var(--white);
+}
+
+/* Responsive adjustments for back buttons */
+@media (max-width: 768px) {
+    .btn-back-to-web-header {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+        margin-right: 0.5rem;
+    }
+    
+    .header-right {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .back-to-website {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+    }
+    
+    .btn-back-to-web {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.85rem;
+    }
+    
+    .btn-back-to-web-header span {
+        display: none;
+    }
+}
