@@ -303,26 +303,8 @@ function initAnimations() {
         ease: 'power3.out'
     });
 
-    // Product card hover effects
-    document.querySelectorAll('.producto-card').forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            gsap.to(card, {
-                duration: 0.3,
-                y: -10,
-                boxShadow: '0 20px 40px rgba(233, 30, 99, 0.2)',
-                ease: 'power2.out'
-            });
-        });
-
-        card.addEventListener('mouseleave', () => {
-            gsap.to(card, {
-                duration: 0.3,
-                y: 0,
-                boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-                ease: 'power2.out'
-            });
-        });
-    });
+    // Product card hover effects - Using CSS transitions instead
+    // The hover effects are now handled by CSS for better performance
 }
 
 // Mobile menu functionality
