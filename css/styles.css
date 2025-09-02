@@ -26,6 +26,8 @@ body {
   line-height: 1.6;
   color: var(--black-text);
   background: linear-gradient(135deg, var(--primary-pink) 0%, var(--white) 100%);
+  overflow-x: hidden;
+  position: relative;
 }
 
 .container {
@@ -476,19 +478,25 @@ body {
   border-radius: 20px;
   text-align: center;
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  transition: all 0.3s ease;
   border: 2px solid rgba(248, 200, 220, 0.3);
   position: relative;
   overflow: hidden;
   margin-bottom: 1rem;
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-.producto-card.in-view {
   opacity: 1;
   transform: translateY(0);
+  transition: all 0.3s ease;
+}
+
+/* Animation states for cards */
+.productos-animate .producto-card {
+  opacity: 0;
+  transform: translateY(30px);
   transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.productos-animate .producto-card.in-view {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .producto-card::before {
@@ -1399,9 +1407,10 @@ body {
   .whatsapp-float {
     width: 50px;
     height: 50px;
-    bottom: 20px;
-    right: 20px;
+    bottom: 15px;
+    right: 15px;
     font-size: 24px;
+    position: fixed;
   }
   
   .section-title {

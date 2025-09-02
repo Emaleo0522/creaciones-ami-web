@@ -16,6 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
     loadGalleryItems();
     updateWhatsAppLinks();
     updateAboutStats();
+    
+    // Enable product animations after page load
+    setTimeout(() => {
+        document.querySelector('.productos').classList.add('productos-animate');
+    }, 500);
 });
 
 // GSAP Animations
@@ -680,8 +685,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Intersection Observer for lazy loading and animations
 const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '50px 0px'
+    threshold: 0.2,
+    rootMargin: '0px 0px -50px 0px'
 };
 
 const observer = new IntersectionObserver((entries) => {
@@ -692,14 +697,17 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe elements for animations
-document.querySelectorAll('.producto-card, .gallery-item, .section-title').forEach((el, index) => {
-    // Add staggered delay for product cards
-    if (el.classList.contains('producto-card')) {
-        el.style.transitionDelay = `${index * 0.1}s`;
-    }
-    observer.observe(el);
-});
+// Setup animations after DOM loads
+setTimeout(() => {
+    // Observe elements for animations
+    document.querySelectorAll('.producto-card, .gallery-item, .section-title').forEach((el, index) => {
+        // Add staggered delay for product cards
+        if (el.classList.contains('producto-card')) {
+            el.style.transitionDelay = `${(index % 6) * 0.15}s`;
+        }
+        observer.observe(el);
+    });
+}, 600);
 
 // Parallax effect for hero background
 gsap.to('.hero', {
