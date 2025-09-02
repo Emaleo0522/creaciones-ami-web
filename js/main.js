@@ -693,7 +693,11 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Observe elements for animations
-document.querySelectorAll('.producto-card, .gallery-item, .section-title').forEach(el => {
+document.querySelectorAll('.producto-card, .gallery-item, .section-title').forEach((el, index) => {
+    // Add staggered delay for product cards
+    if (el.classList.contains('producto-card')) {
+        el.style.transitionDelay = `${index * 0.1}s`;
+    }
     observer.observe(el);
 });
 
