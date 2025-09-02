@@ -1170,18 +1170,18 @@ section {
     position: fixed;
     top: 70px;
     left: 0;
-    width: 100%;
+    width: 100vw;
     background: var(--white);
-    border: 2px solid var(--primary-pink);
+    border: 3px solid var(--accent-pink);
     flex-direction: column;
     text-align: center;
     padding: 2rem 0;
-    box-shadow: 0 8px 30px rgba(233, 30, 99, 0.3);
+    box-shadow: 0 10px 40px rgba(233, 30, 99, 0.5);
     transform: translateY(-100%);
     opacity: 0;
     visibility: hidden;
     transition: all 0.4s ease;
-    z-index: 1001;
+    z-index: 99999;
   }
   
   .nav-menu.active {
@@ -1391,11 +1391,18 @@ section {
     grid-template-columns: 1fr;
     gap: 1rem;
     padding: 0 0.5rem;
+    min-height: auto;
+  }
+  
+  .productos {
+    padding: 40px 10px;
   }
   
   .producto-card {
     padding: 1.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    display: block;
   }
   
   .producto-icon {
