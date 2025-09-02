@@ -21,6 +21,11 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
   line-height: 1.6;
@@ -28,12 +33,21 @@ body {
   background: linear-gradient(135deg, var(--primary-pink) 0%, var(--white) 100%);
   overflow-x: hidden;
   position: relative;
+  width: 100%;
+  max-width: 100vw;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  width: 100%;
+}
+
+/* Prevent horizontal overflow on all devices */
+section {
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 /* Header */
@@ -43,8 +57,10 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
+  max-width: 100vw;
   z-index: 1000;
   box-shadow: 0 2px 20px rgba(233, 30, 99, 0.1);
+  overflow: hidden;
 }
 
 .navbar {
@@ -504,11 +520,11 @@ body {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(30px) scale(0.8);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -1279,21 +1295,37 @@ body {
 }
 
 @media (max-width: 480px) {
+  .navbar {
+    padding: 0.8rem 0;
+  }
+  
   .nav-container {
-    padding: 0 15px;
-    max-width: 100%;
+    padding: 0 10px;
+    max-width: 100vw;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   
   .logo {
-    flex: 1;
+    flex: 0 1 auto;
+    min-width: 0;
   }
   
   .logo span {
-    font-size: 1rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+  
+  .logo img {
+    width: 32px;
+    height: 32px;
   }
   
   .hamburger {
-    margin-left: auto;
+    flex: 0 0 auto;
+    margin-left: 10px;
   }
   
   .hero {
@@ -1437,10 +1469,11 @@ body {
   .whatsapp-float {
     width: 50px;
     height: 50px;
-    bottom: 15px;
-    right: 15px;
-    font-size: 24px;
+    bottom: 10px;
+    right: 10px;
+    font-size: 22px;
     position: fixed;
+    z-index: 999;
   }
   
   .section-title {
